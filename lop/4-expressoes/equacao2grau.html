@@ -1,0 +1,33 @@
+<!--
+ Calcula delta
+Calcula pow(b,2) e guarda em i 
+Calcula 4 * a * c e guarda em j
+Calcula i – j e guarda em delta
+Calcula sqrt (delta) e guarda em l
+Calcula –b e guarda em m
+Calcula 2 * a e guarda em n
+[Primeira raiz] Calcula (m + l) / n e guarda em x1
+[Segunda raiz] Calcula (m – l) / n e guarda em x2
+
+-->
+<script>
+    var a = 1;
+    var b = -1;
+    var c = -20;
+    var i,j,delta,l,m,n,x1,x2;
+    i = Math.pow(b,2);
+    alert(i);
+    j = 4*a*c;
+    alert(j);
+    delta = i-j;
+    alert(delta);
+    l = Math.sqrt(delta);
+    alert(l);
+    m = -b;
+    alert(m);
+    n = 2*a;
+    alert(n);
+    x1 = (m+l)/n;
+    x2 = (m-l)/n;
+    alert("x1:"+x1+ "  x2:"+x2);
+</script>
