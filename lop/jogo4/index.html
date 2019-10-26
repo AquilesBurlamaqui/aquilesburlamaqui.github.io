@@ -1,0 +1,91 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://github.com/processing/p5.js/releases/download/0.5.16/p5.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+  <script>
+var temLetra=true;
+var letra;
+var x,y;
+var pontos=0;
+var life=3;
+var difilculdade=1;
+    
+function preload() {
+   soundFormats('mp3', 'ogg'); 
+   mySound = loadSound('sons/musica.ogg');
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  x=10;
+  y=50;
+  letra=String.fromCharCode(65+random(20));
+  //mySound.setVolume(0.1);
+  mySound.play();
+}
+
+function draw() {
+  background(200,200,421); 
+  text("SCORE: "+pontos, 10, 30);
+  text("LIFE:"+life, 400, 30);
+  text("FASE:"+difilculdade, 600, 30);
+  textSize(32);
+  text(letra, x, y);
+  if(!temLetra) { 
+    
+    letra = String.fromCharCode(65+random(20))
+    temLetra=true;
+  }
+  y=y+difilculdade;
+  if(y>windowHeight) {
+    life--;
+    y=50;
+    temLetra=false;
+  }
+  if(life==0) {
+    alert("GAME OVER !");
+    noLoop();
+  }
+  if(pontos==5)
+      difilculdade=2;
+  if(pontos==10)
+      difilculdade=3;
+  if(pontos==15)
+      difilculdade=4;
+  if(pontos==20)
+      difilculdade=5;
+  if(pontos==25)
+      difilculdade=6;
+  if(pontos==30)
+      difilculdade=7;
+  if(pontos==35)
+      difilculdade=8;
+  if(pontos==40)
+      difilculdade=9;
+  if(pontos==45)
+      difilculdade=9;
+  if(pontos==50)
+     difilculdade=10;
+ 
+} 
+
+function keyPressed() {
+  if (keyCode == letra.charCodeAt(0)) {
+		pontos++;
+    temLetra=false;
+    y=50;
+    x=random(50,windowWidth-50);
+	} else { 
+    pontos--;
+  }
+}
+    
+     </script>
+
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+</body>
+</html>
