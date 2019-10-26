@@ -32,7 +32,8 @@ function setup() {
 }
 
 function draw() {
-  image(img, 0, 0);
+  image(img, 0, 0,windowWidth, windowHeight);
+  fill(255,255,255);	
   text("SCORE: "+pontos, 10, 30);
   text("LIFE:"+life, 400, 30);
   text("FASE:"+difilculdade, 600, 30);
