@@ -25,10 +25,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   x=10;
   y=50;
-  letra=String.fromCharCode(65+random(20));
+  letra=String.fromCharCode(65+random(26));
   //mySound.setVolume(0.1);
   mySound.play();
- 	
+ 	mySound.setLoop(true);
 }
 
 function draw() {
@@ -51,8 +51,10 @@ function draw() {
     temLetra=false;
   }
   if(life==0) {
-    alert("GAME OVER !");
+    textSize(100);
+    text("GAME OVER !", windowWidth/2-120, windowHeight/2);
     noLoop();
+    mySound.stop();
   }
   if(pontos==5)
       difilculdade=2;
