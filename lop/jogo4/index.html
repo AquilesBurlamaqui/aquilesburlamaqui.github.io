@@ -10,12 +10,15 @@ var x,y;
 var pontos=0;
 var life=3;
 var difilculdade=1;
+	  
+let img;	  
     
 function preload() {
    soundFormats('mp3', 'ogg'); 
    mySound = loadSound('sons/musica.ogg');  
    somAcertou = loadSound('sons/media.io_Picked Coin Echo 2.ogg'); 
    somErrou = loadSound('sons/error.mp3'); 
+   img = loadImage('imagens/backearth.jpg');
 }
 
 function setup() {
@@ -25,10 +28,11 @@ function setup() {
   letra=String.fromCharCode(65+random(20));
   //mySound.setVolume(0.1);
   mySound.play();
+ 	
 }
 
 function draw() {
-  background(200,200,421); 
+  image(img, 0, 0);
   text("SCORE: "+pontos, 10, 30);
   text("LIFE:"+life, 400, 30);
   text("FASE:"+difilculdade, 600, 30);
