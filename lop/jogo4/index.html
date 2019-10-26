@@ -14,7 +14,8 @@ var difilculdade=1;
 function preload() {
    soundFormats('mp3', 'ogg'); 
    mySound = loadSound('sons/musica.ogg');  
-   somAcertou = loadSound('sons/jump.ogg'); 	 
+   somAcertou = loadSound('sons/jump.ogg'); 
+   somErrou = loadSound('sons/error.mp3'); 
 }
 
 function setup() {
@@ -79,7 +80,8 @@ function keyPressed() {
     	x=random(50,windowWidth-50);
 	somAcertou.play();
    } else { 
-    pontos--;
+    	pontos--; 
+	somErrou.play();
   }
 }
     
