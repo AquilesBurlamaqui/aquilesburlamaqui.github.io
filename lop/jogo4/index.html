@@ -13,7 +13,8 @@ var difilculdade=1;
     
 function preload() {
    soundFormats('mp3', 'ogg'); 
-   mySound = loadSound('sons/musica.ogg');
+   mySound = loadSound('sons/musica.ogg');  
+   somAcertou = loadSound('sons/jump.ogg'); 	 
 }
 
 function setup() {
@@ -72,11 +73,12 @@ function draw() {
 
 function keyPressed() {
   if (keyCode == letra.charCodeAt(0)) {
-		pontos++;
-    temLetra=false;
-    y=50;
-    x=random(50,windowWidth-50);
-	} else { 
+  	pontos++;
+        temLetra=false;
+    	y=50;
+    	x=random(50,windowWidth-50);
+	somAcertou.play();
+   } else { 
     pontos--;
   }
 }
