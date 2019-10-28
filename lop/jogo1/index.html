@@ -1,0 +1,90 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://github.com/processing/p5.js/releases/download/0.5.16/p5.js"></script> 
+  <script>
+let map = [
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+];
+    
+var x = 100;
+var y = 100;
+
+
+var tileSize=50;
+
+function setup() {
+  createCanvas(1200, 550);
+}
+
+function draw() {
+  background(220);
+
+  fill(255, 204, 0);
+  for (let i = 0; i < map.length; i++) {
+    for (let j = 0; j < map[i].length; j++) {
+      if (map[i][j] != 0) {
+        rect(j * tileSize, i * tileSize, tileSize, tileSize);
+      }
+    }
+  }
+  
+   if (keyIsDown(LEFT_ARROW) && !bateuNoMapa())
+    x-=5;
+
+  if (keyIsDown(RIGHT_ARROW)  && !bateuNoMapa())
+    x+=5;
+
+  if (keyIsDown(UP_ARROW) && !bateuNoMapa())
+    y-=5;
+
+  if (keyIsDown(DOWN_ARROW) && !bateuNoMapa())
+    y+=5;
+	
+  ellipse(x, y, 50, 50);
+}
+    
+    function bateuNoMapa() {
+        let bateu=false; 
+        for (let i = 0; i < map.length; i++) {
+            for (let j = 0; j < map[i].length; j++) {
+                 if(map[i,j]!=0 && colisao(x,y,j * tileSize,i * tileSize)) 
+                     bateu=true;
+            }
+        }
+      return bateu;
+    }
+                    
+   function colisao(x1,y1,x2,y2) {
+				if(x1 > x2 + 50)
+					return false;
+				if(y1 > y2 + 50)
+					return false;
+				if(x1 + 50 < x2)
+					return false;
+				if(y1 + 50 < y2)
+					return false;
+				return true;
+			}
+
+    
+    
+    
+  </script>
+
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+</body>
+</html>
