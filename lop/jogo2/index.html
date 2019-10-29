@@ -1,0 +1,142 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://github.com/processing/p5.js/releases/download/0.5.16/p5.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+  <script>
+  var pose = 0;
+  var poseTime=0;
+  var mode = 0;
+  var x = 10;
+  var y = 200;
+  var idle = [];
+  var walk = [];
+  var jump = [];
+    
+  let pulo;
+  let tempo_pulo=0;
+  let pulando;
+  let pulo_posicao_y_jogador = y;
+  let varpulo;
+
+let img;
+function preload() {
+  soundFormats('mp3', 'ogg');
+  mySound = loadSound('sons/jump.ogg');
+
+  idle[0] = loadImage('dino/Idle (1).png');
+  idle[1] = loadImage('dino/Idle (2).png');
+  idle[2] = loadImage('dino/Idle (3).png');
+  idle[3] = loadImage('dino/Idle (4).png');
+  idle[4] = loadImage('dino/Idle (5).png');
+  idle[5] = loadImage('dino/Idle (6).png');
+  idle[6] = loadImage('dino/Idle (7).png');
+  idle[7] = loadImage('dino/Idle (8).png');
+  idle[8] = loadImage('dino/Idle (9).png');
+  
+  walk[0] = loadImage('dino/Walk (1).png');
+  walk[1] = loadImage('dino/Walk (2).png');
+  walk[2] = loadImage('dino/Walk (3).png');
+  walk[3] = loadImage('dino/Walk (4).png');
+  walk[4] = loadImage('dino/Walk (5).png');
+  walk[5] = loadImage('dino/Walk (6).png');
+  walk[6] = loadImage('dino/Walk (7).png');
+  walk[7] = loadImage('dino/Walk (8).png');
+  walk[8] = loadImage('dino/Walk (9).png');
+
+  jump[0] = loadImage('dino/Jump (1).png');
+  jump[1] = loadImage('dino/Jump (2).png');
+  jump[2] = loadImage('dino/Jump (3).png');
+  jump[3] = loadImage('dino/Jump (4).png');
+  jump[4] = loadImage('dino/Jump (5).png');
+  jump[5] = loadImage('dino/Jump (6).png');
+  jump[6] = loadImage('dino/Jump (7).png');
+  jump[7] = loadImage('dino/Jump (8).png');
+  jump[8] = loadImage('dino/Jump (9).png');
+}
+ 
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+  background(0);
+  //mode 0: idle mode:1 walk mode:2 jump
+  if(mode==0) {
+      image(idle[pose%9], x, pulo_posicao_y_jogador,150, 175);
+  } else {
+     if (mode==1) {
+       image(walk[pose%9], x, pulo_posicao_y_jogador,150, 175);
+     } else {
+         if(mode==2)
+            image(jump[pose%9], x, pulo_posicao_y_jogador,150, 175);
+     }
+
+  }
+  if(poseTime==5) {
+     pose++;
+     poseTime=0;
+  } else {
+    poseTime++;
+  }
+  
+   if (keyIsPressed === true) {
+       if(pulando)
+          mode=2;
+       else
+          mode=1;
+  } else {
+    mode=0;
+  }
+  
+  if (keyIsDown(LEFT_ARROW))
+    x-=5;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x+=5;
+  
+  if(keyIsDown(UP_ARROW) || (pulo_posicao_y_jogador< y ))  {
+    pulando=true;
+   
+  }else
+    pulando = false;
+  
+  pular();
+  textSize(16);
+  fill(0, 102, 153);
+  text('pulo: '+pulo, 10, 30);
+  
+}
+
+function keyPressed() { 
+   if(keyCode==UP_ARROW) {
+        mySound.setVolume(0.1);
+        mySound.play();
+   }
+}
+    
+function pular(){
+  if (pulando) {
+    varpulo = tempo_pulo-23; 
+    pulo =- tempo_pulo*varpulo;
+    
+    tempo_pulo = tempo_pulo + 0.5;
+    if (pulo < 0) {
+      pulando=false;
+      pulo=0;
+      tempo_pulo=0;
+    }
+    pulo_posicao_y_jogador = y - pulo;
+    console.log("Pulo:"+pulo+" tempo_pulo:"+tempo_pulo+" heigth:*0,035: "+height*0.035+ " pulo_posicao_y_jogador:"+pulo_posicao_y_jogador)
+    console.log("VarPULO: "+varpulo)
+  }
+}
+    
+  </script>
+
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+</body>
+</html>
