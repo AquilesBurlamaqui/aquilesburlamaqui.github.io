@@ -1,1 +1,34 @@
-,,
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://github.com/processing/p5.js/releases/download/0.5.16/p5.js"></script> 
+  <script>
+  var tempoInicial;
+  var tempoAtual;
+  var tempoDeJogo;
+  var tempoRestante = 3;
+
+  function setup() {
+    createCanvas(400, 400);
+    tempoInicial=new Date().getTime();
+  }
+
+  function draw() {
+    background(220);
+    tempoAtual = new Date().getTime();
+    tempoDeJogo = Math.round((tempoAtual-tempoInicial)/1000);
+    text(tempoRestante-tempoDeJogo+" s",10,20)
+    if(tempoRestante-tempoDeJogo==0)  {
+        textSize(25);
+        text("GAME OVER",(width/2-70), height/2)
+        noLoop();
+    }
+  }
+  </script>
+
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+</body>
+</html>
