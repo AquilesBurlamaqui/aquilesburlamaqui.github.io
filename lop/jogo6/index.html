@@ -1,0 +1,70 @@
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://github.com/processing/p5.js/releases/download/0.5.16/p5.js"></script> 
+  <script>
+
+var x = 51;
+var y = 51;
+
+function setup() {
+  createCanvas(1202, 552);
+}
+
+function draw() {
+  background(220);
+  
+  fill(255, 255, 0);
+ 
+  if (touches.length>0) { 
+    if(colisao(350,350,touches[0].x, touches[0].y))
+         x-=5;
+    if(colisao(450,350,touches[0].x, touches[0].y))
+         x+=5;
+    if (colisao(400,300,touches[0].x, touches[0].y))
+         y-=5;
+    if(colisao(400,400,touches[0].x, touches[0].y))
+         y+=5;
+  }
+
+
+	fill(0, 0, 204);
+  ellipse(x, y, 48, 48);
+   
+  //cima 
+  rect(400, 300, 48, 48);
+   
+  //baixo 
+  rect(400, 400, 48, 48); 
+
+  //esquerda
+  rect(350, 350, 48, 48); 
+
+  //direita
+  rect(450, 350, 48, 48); 
+
+
+}
+
+function colisao(x1,y1,x2,y2) {
+        if(x1 > x2 + 48)
+          return false;
+        if(y1 > y2 + 48)
+          return false;
+        if(x1 + 48 < x2)
+          return false;
+        if(y1 + 48 < y2)
+          return false;
+        return true;
+}
+
+
+  </script>
+
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+</body>
+</html>
