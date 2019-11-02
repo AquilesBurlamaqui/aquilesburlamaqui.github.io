@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <style>
+            body {
+                margin : 0px;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+ 
+  <body>
+ 
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/examples/vendor/aframe/build/aframe.min.js"></script>
+    <script src='https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js'></script>
+         
+    <script>ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'</script>
+ 
+    <!-- Create a A-Frame Scene and enable tracking with ar.js -->
+    <a-scene embedded arjs='trackingMethod: best;'>
+ 
+      <!-- Create an A-Frame anchor for our 3D models, detect for marker -->
+      <a-anchor hit-testing-enabled='true'>
+ 
+        <!-- Provide a rotating Box and Torus Knot -->
+        <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
+          <a-torus-knot radius='0.26' radius-tubular='0.05'>
+            <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+          </a-torus-knot>
+        </a-box>
+ 
+      </a-anchor>
+ 
+      <a-camera-static/>
+ 
+    </a-scene>
+  </body>
+</html>
