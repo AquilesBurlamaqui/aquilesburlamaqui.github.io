@@ -1,4 +1,4 @@
-const client = new Paho.MQTT.Client("wss://mqtt.eclipse.org", "myClientId" + new Date().getTime());
+const client = new Paho.MQTT.Client("wss://mqtt.eclipse.org/", "myClientId" + new Date().getTime());
 const myTopic = "bailemqtt";
 client.connect({ onSuccess: onConnect })
 let counter = 0;
