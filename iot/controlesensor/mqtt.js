@@ -1,5 +1,45 @@
-const client = new Paho.MQTT.Client("wss://mqtt.eclipse.org/", "myClientId" + new Date().getTime());
-const myTopic = "bailemqtt";
+const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8)
+const host = 'wss://broker.emqx.io:8084/mqtt'
+const publishTopic = 'BAILE/input'
+var ledIsOn = false
+var msg = 'off'
+const options = {
+  keepalive: 60,
+  clientId: clientId,
+  protocolId: 'MQTT',
+  protocolVersion: 4,
+  clean: true,
+  reconnectPeriod: 1000,
+  connectTimeout: 30 * 1000,
+  will: {
+    topic: 'WillMsg',
+    payload: 'Connection Closed abnormally..!',
+    qos: 0,
+    retain: false
+  }
+}
+console.log('Connecting mqtt client')
+const client = mqtt.connect(host, options)
+client.on('error', err => {
+  console.log('Connection error: ', err)
+  client.end()
+})
+client.on('reconnect', () => {
+  console.log('Reconnecting...')
+})
+
+client.on('connect', function () {
+  console.log('Conectado ao servidor MQTT')
+})
+
+
+
+function move(cmd){
+  client.publish(publishTopic, msg, { qos: 0, retain: false })
+  console.log(cmd) 
+}
+/*const client = new Paho.MQTT.Client("wss://broker.emqx.io:8084/mqtt", "myClientId" + new Date().getTime());
+const myTopic = "bailerobo/input";
 client.connect({ onSuccess: onConnect })
 let counter = 0;
 function onConnect() {
@@ -28,4 +68,4 @@ function onConnectionLost(responseObject) {
     console.log("onConnectionLost:" + responseObject.errorMessage);
   }
   client.connect({ onSuccess: onConnect });
-}
+}*/
