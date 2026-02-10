@@ -162,6 +162,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
             z-index: 100;
         }
@@ -459,6 +461,114 @@
             }
         }
 
+        /* Life bar */
+        .life-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 25px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .life-bar-icon {
+            font-size: 1.2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .life-bar-icon.low {
+            animation: heartbeat-fast 0.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        @keyframes heartbeat-fast {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+        }
+
+        .life-bar-track {
+            width: 80px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .life-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c, #ff6b6b);
+            transition: width 0.3s ease;
+            border-radius: 5px;
+            box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+        }
+
+        .life-bar-fill.medium {
+            background: linear-gradient(90deg, #f39c12, #f1c40f);
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+        }
+
+        .life-bar-fill.high {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+
+        .life-bar-text {
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.75rem;
+            color: #ff6b6b;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* Screen flash on damage */
+        .damage-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(231, 76, 60, 0.3);
+            pointer-events: none;
+            z-index: 90;
+            animation: flash-out 0.3s ease-out forwards;
+        }
+
+        @keyframes flash-out {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .heal-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(46, 204, 113, 0.25);
+            pointer-events: none;
+            z-index: 90;
+            animation: flash-out 0.4s ease-out forwards;
+        }
+
         /* Tela de game over */
         #gameover-screen {
             position: fixed;
@@ -472,6 +582,7 @@
             -webkit-backdrop-filter: blur(10px);
             z-index: 800;
             gap: 16px;
+            padding: 20px;
         }
 
         .gameover-title {
@@ -504,6 +615,43 @@
             font-size: 0.9rem;
             color: #2ecc71;
             margin-top: 8px;
+        }
+
+        /* Share buttons */
+        .share-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-share {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        .btn-share:active {
+            transform: scale(0.95);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-instagram {
+            background: linear-gradient(135deg, #833AB4, #FD1D1D, #F77737);
+            box-shadow: 0 4px 15px rgba(131, 58, 180, 0.4);
         }
 
         /* Orientação paisagem - aviso */
@@ -748,6 +896,14 @@
                 🏪
                 <div class="badge" id="shop-badge" style="display:none;">!</div>
             </div>
+
+            <div class="life-bar-container" id="life-bar-container">
+                <span class="life-bar-icon" id="life-icon">❤️</span>
+                <div class="life-bar-track">
+                    <div class="life-bar-fill high" id="life-bar-fill" style="width:100%"></div>
+                </div>
+                <span class="life-bar-text" id="life-text">5</span>
+            </div>
         </div>
 
         <!-- Canvas -->
@@ -784,7 +940,7 @@
 
     <!-- ========== GAME OVER ========== -->
     <div id="gameover-screen">
-        <div class="gameover-title">⏰ Tempo Esgotado!</div>
+        <div class="gameover-title" id="go-title">💀 Game Over!</div>
         <div class="gameover-score" id="go-score">0 pontos</div>
         <div class="gameover-details">
             <div class="gameover-detail" id="go-caps">🧢 Tampinhas coletadas: 0</div>
@@ -792,6 +948,14 @@
             <div class="gameover-detail" id="go-combo">🔥 Combo máximo: 0x</div>
         </div>
         <div class="gameover-best" id="go-best"></div>
+        <div class="share-container">
+            <button class="btn-share btn-whatsapp" onclick="shareWhatsApp()">
+                📱 WhatsApp
+            </button>
+            <button class="btn-share btn-instagram" onclick="shareInstagram()">
+                📸 Instagram
+            </button>
+        </div>
         <button class="btn btn-play" onclick="startGame()">🔄 Jogar Novamente</button>
         <button class="btn btn-close" onclick="goToMenu()" style="margin-top:4px;">🏠 Menu</button>
     </div>
@@ -800,7 +964,9 @@
     <div class="tutorial-overlay" id="tutorial-overlay">
         <p>Toque nas tampinhas para coletá-las!</p>
         <div class="tutorial-hand">👆</div>
-        <p style="font-size:0.9rem; color:#c8a050;">Troque tampinhas por cervejas na loja 🏪 para ganhar mais pontos!
+        <p style="font-size:0.9rem; color:#c8a050;">⚠️ Tampinhas que caírem = perda de vida!<br>
+            🍟🍖 Colete petiscos para recuperar vida!<br>
+            🏪 Troque tampinhas por cervejas para mais pontos!
         </p>
         <button class="btn btn-play" onclick="closeTutorial()"
             style="font-size:1rem; padding:12px 32px;">Entendi!</button>
@@ -825,6 +991,14 @@
             { name: 'Cerveja Lendária', emoji: '👑', cost: 150, bonus: 1000, desc: 'A lendária! Apenas para os melhores!' },
         ];
 
+        // ========================= PETISCOS (food) =========================
+        const FOOD_TYPES = [
+            { type: 'batata', emoji: '🍟', label: 'Batatinha', heal: 1, color: '#f1c40f', weight: 60 },
+            { type: 'churrasco', emoji: '🍖', label: 'Churrasco', heal: 2, color: '#e74c3c', weight: 40 },
+        ];
+
+        const MAX_LIFE = 5;
+
         // ========================= ESTADO DO JOGO =========================
         let state = {
             score: 0,
@@ -843,6 +1017,9 @@
             timerInterval: null,
             shopOpen: false,
             firstPlay: true,
+            life: MAX_LIFE,
+            foodOnScreen: [],
+            foodSpawnInterval: null,
         };
 
         // ========================= CANVAS =========================
@@ -901,7 +1078,7 @@
                 if (this.x < this.radius) { this.x = this.radius; this.vx *= -1; }
                 if (this.x > W - this.radius) { this.x = W - this.radius; this.vx *= -1; }
 
-                // Off screen bottom
+                // Off screen bottom — lose life!
                 if (this.y > H + this.radius * 2) {
                     this.alive = false;
                     // Reset combo on miss
@@ -909,6 +1086,8 @@
                         state.combo = 0;
                         updateComboIndicator();
                     }
+                    // Lose life
+                    takeDamage(1);
                 }
             }
 
@@ -1008,6 +1187,160 @@
             }
         }
 
+        // ========================= FOOD ITEM CLASS =========================
+        class FoodItem {
+            constructor() {
+                const r = Math.random() * 100;
+                let cumulative = 0;
+                this.foodType = FOOD_TYPES[0];
+                for (const ft of FOOD_TYPES) {
+                    cumulative += ft.weight;
+                    if (r < cumulative) {
+                        this.foodType = ft;
+                        break;
+                    }
+                }
+                this.radius = 20;
+                this.x = this.radius + Math.random() * (W - this.radius * 2);
+                this.y = -this.radius * 2;
+                this.vy = 1.0 + Math.random() * 1.0 + (state.wave * 0.1);
+                this.vx = (Math.random() - 0.5) * 2;
+                this.alive = true;
+                this.opacity = 1;
+                this.pulsePhase = Math.random() * Math.PI * 2;
+                this.collected = false;
+                this.collectAnim = 0;
+                this.bobPhase = Math.random() * Math.PI * 2;
+            }
+
+            update() {
+                if (this.collected) {
+                    this.collectAnim += 0.1;
+                    this.opacity = Math.max(0, 1 - this.collectAnim);
+                    if (this.opacity <= 0) this.alive = false;
+                    return;
+                }
+                this.y += this.vy;
+                this.bobPhase += 0.06;
+                this.x += this.vx + Math.sin(this.bobPhase) * 0.5;
+                this.pulsePhase += 0.05;
+
+                // Bouncing off walls
+                if (this.x < this.radius) { this.x = this.radius; this.vx *= -1; }
+                if (this.x > W - this.radius) { this.x = W - this.radius; this.vx *= -1; }
+
+                // Off screen bottom (food just disappears, no penalty)
+                if (this.y > H + this.radius * 2) {
+                    this.alive = false;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.translate(this.x, this.y);
+
+                const pulse = 1 + Math.sin(this.pulsePhase) * 0.1;
+                const size = this.radius * pulse;
+
+                // Glow
+                ctx.shadowColor = this.foodType.color;
+                ctx.shadowBlur = 20;
+
+                // Background circle
+                ctx.beginPath();
+                ctx.arc(0, 0, size + 4, 0, Math.PI * 2);
+                const grad = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size + 4);
+                grad.addColorStop(0, 'rgba(46, 204, 113, 0.4)');
+                grad.addColorStop(1, 'rgba(46, 204, 113, 0.1)');
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Green border
+                ctx.beginPath();
+                ctx.arc(0, 0, size + 2, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(46, 204, 113, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Emoji
+                ctx.shadowBlur = 0;
+                ctx.font = `${size * 1.3}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.foodType.emoji, 0, 2);
+
+                // Heal indicator
+                ctx.font = `bold ${size * 0.5}px 'Fredoka One', cursive`;
+                ctx.fillStyle = '#2ecc71';
+                ctx.fillText(`+${this.foodType.heal}❤`, 0, -size - 8);
+
+                ctx.restore();
+            }
+
+            containsPoint(px, py) {
+                if (this.collected) return false;
+                const dx = px - this.x;
+                const dy = py - this.y;
+                return (dx * dx + dy * dy) <= (this.radius + 15) * (this.radius + 15);
+            }
+
+            collect() {
+                this.collected = true;
+                // Heal
+                healLife(this.foodType.heal);
+                // FX
+                showFloatText(this.x, this.y, `+${this.foodType.heal}❤️ ${this.foodType.label}`, '#2ecc71');
+                spawnParticles(this.x, this.y, '#2ecc71');
+                // Heal flash
+                const flash = document.createElement('div');
+                flash.className = 'heal-flash';
+                document.body.appendChild(flash);
+                setTimeout(() => flash.remove(), 400);
+            }
+        }
+
+        // ========================= LIFE SYSTEM =========================
+        function takeDamage(amount) {
+            state.life = Math.max(0, state.life - amount);
+            updateLifeBar();
+            // Screen flash
+            const flash = document.createElement('div');
+            flash.className = 'damage-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 300);
+            // Vibrate if supported
+            if (navigator.vibrate) navigator.vibrate(100);
+            // Check game over
+            if (state.life <= 0) {
+                gameOver('life');
+            }
+        }
+
+        function healLife(amount) {
+            state.life = Math.min(MAX_LIFE, state.life + amount);
+            updateLifeBar();
+        }
+
+        function updateLifeBar() {
+            const pct = (state.life / MAX_LIFE) * 100;
+            const fill = document.getElementById('life-bar-fill');
+            fill.style.width = pct + '%';
+            // Color classes
+            fill.classList.remove('high', 'medium');
+            if (pct > 60) fill.classList.add('high');
+            else if (pct > 30) fill.classList.add('medium');
+            // Text
+            document.getElementById('life-text').textContent = state.life;
+            // Heart icon animation
+            const icon = document.getElementById('life-icon');
+            if (state.life <= 2) {
+                icon.classList.add('low');
+            } else {
+                icon.classList.remove('low');
+            }
+        }
+
         // ========================= HELPER FUNCTIONS =========================
         function lightenColor(hex, amount) {
             const c = hexToRgb(hex);
@@ -1084,6 +1417,7 @@
             const canBuy = BEERS.some(b => state.caps >= b.cost);
             const badge = document.getElementById('shop-badge');
             badge.style.display = canBuy ? 'flex' : 'none';
+            updateLifeBar();
         }
 
         // ========================= BACKGROUND DRAWING =========================
@@ -1125,6 +1459,11 @@
             state.capsOnScreen.push(new Cap());
         }
 
+        function spawnFood() {
+            if (!state.running) return;
+            state.foodOnScreen.push(new FoodItem());
+        }
+
         function getSpawnRate() {
             // Faster spawns as waves progress
             return Math.max(300, 1000 - state.wave * 80);
@@ -1139,6 +1478,15 @@
                     setTimeout(() => spawnCap(), i * 150);
                 }
             }, getSpawnRate());
+
+            // Food spawn (less frequent)
+            if (state.foodSpawnInterval) clearInterval(state.foodSpawnInterval);
+            state.foodSpawnInterval = setInterval(() => {
+                if (!state.running || state.shopOpen) return;
+                if (state.life < MAX_LIFE && Math.random() < 0.6) {
+                    spawnFood();
+                }
+            }, 4000 + Math.random() * 2000);
         }
 
         // ========================= WAVES =========================
@@ -1165,8 +1513,15 @@
                 cap.draw();
             }
 
-            // Remove dead caps
+            // Update & draw food items
+            for (const food of state.foodOnScreen) {
+                food.update();
+                food.draw();
+            }
+
+            // Remove dead caps & food
             state.capsOnScreen = state.capsOnScreen.filter(c => c.alive);
+            state.foodOnScreen = state.foodOnScreen.filter(f => f.alive);
 
             checkWaveProgress();
 
@@ -1184,7 +1539,7 @@
                 timerBar.style.width = pct + '%';
 
                 if (state.timeLeft <= 0) {
-                    gameOver();
+                    gameOver('time');
                 }
             }, 100);
         }
@@ -1196,7 +1551,15 @@
             const px = e.clientX - rect.left;
             const py = e.clientY - rect.top;
 
-            // Check from top (newest) to bottom
+            // Check food items first (they are rarer and more important)
+            for (let i = state.foodOnScreen.length - 1; i >= 0; i--) {
+                if (state.foodOnScreen[i].containsPoint(px, py)) {
+                    state.foodOnScreen[i].collect();
+                    return;
+                }
+            }
+
+            // Check caps from top (newest) to bottom
             for (let i = state.capsOnScreen.length - 1; i >= 0; i--) {
                 if (state.capsOnScreen[i].containsPoint(px, py)) {
                     state.capsOnScreen[i].collect();
@@ -1262,11 +1625,20 @@
         }
 
         // ========================= GAME OVER =========================
-        function gameOver() {
+        function gameOver(reason) {
             state.running = false;
             clearInterval(state.spawnInterval);
             clearInterval(state.timerInterval);
+            clearInterval(state.foodSpawnInterval);
             cancelAnimationFrame(state.gameLoop);
+
+            // Title based on reason
+            const titleEl = document.getElementById('go-title');
+            if (reason === 'life') {
+                titleEl.textContent = '💀 Game Over!';
+            } else {
+                titleEl.textContent = '⏰ Tempo Esgotado!';
+            }
 
             document.getElementById('go-score').textContent = state.score + ' pontos';
             document.getElementById('go-caps').textContent = '🧢 Tampinhas coletadas: ' + state.totalCapsCollected;
@@ -1287,6 +1659,29 @@
             document.getElementById('gameover-screen').style.display = 'flex';
         }
 
+        // ========================= SHARE =========================
+        function getShareText() {
+            return `🍺 Caça Tampinhas 🍺\n\nFiz ${state.score} pontos!\n🧢 ${state.totalCapsCollected} tampinhas coletadas\n🍺 ${state.totalBeers} cervejas compradas\n🔥 Combo máximo: ${state.maxCombo}x\n\nConsegue me superar? Jogue agora! 👇\n${window.location.href}`;
+        }
+
+        function shareWhatsApp() {
+            const text = encodeURIComponent(getShareText());
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function shareInstagram() {
+            // Instagram doesn't support direct text sharing via URL,
+            // so we copy to clipboard and open Instagram
+            const text = getShareText();
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Resultado copiado! Cole no seu Story ou Direct do Instagram 📸');
+                window.open('https://www.instagram.com/', '_blank');
+            }).catch(() => {
+                // Fallback: show text for manual copy
+                prompt('Copie e compartilhe no Instagram:', text);
+            });
+        }
+
         // ========================= START GAME =========================
         function startGame() {
             // Reset state
@@ -1301,11 +1696,14 @@
             state.lastCollectTime = 0;
             state.wave = 1;
             state.capsOnScreen = [];
+            state.foodOnScreen = [];
             state.shopOpen = false;
+            state.life = MAX_LIFE;
 
             // Clear intervals
             clearInterval(state.spawnInterval);
             clearInterval(state.timerInterval);
+            clearInterval(state.foodSpawnInterval);
             cancelAnimationFrame(state.gameLoop);
 
             // UI
