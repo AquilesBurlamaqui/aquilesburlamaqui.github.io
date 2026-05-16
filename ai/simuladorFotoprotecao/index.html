@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Simulador de Fotoproteção – Proteja-se do Sol!</title>
+    <meta name="description" content="Jogo educativo sobre proteção contra radiação ultravioleta. Aprenda a se proteger do sol na praia!">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Title Screen -->
+        <div id="title-screen" class="overlay">
+            <div class="overlay-box title-box">
+                <div class="sun-icon">☀️</div>
+                <h1>Simulador de<br>Fotoproteção</h1>
+                <p class="subtitle">Proteja os banhistas da radiação ultravioleta!</p>
+                <button id="btn-play" class="btn-primary pulse">▶ Jogar</button>
+                <p class="hint">5 fases educativas sobre proteção solar</p>
+            </div>
+        </div>
+
+        <!-- Phase Intro -->
+        <div id="phase-intro" class="overlay hidden">
+            <div class="overlay-box phase-box">
+                <span class="phase-badge" id="phase-badge">FASE 1</span>
+                <h2 id="phase-title">Protetor Solar</h2>
+                <div class="uv-indicator">
+                    <span>Índice UV:</span>
+                    <div class="uv-bar"><div class="uv-fill" id="uv-fill"></div></div>
+                    <span id="uv-value" class="uv-value">6</span>
+                </div>
+                <p id="phase-desc" class="phase-desc"></p>
+                <div id="phase-items" class="phase-items"></div>
+                <div class="edu-tip" id="edu-tip">
+                    <span class="tip-icon">💡</span>
+                    <p id="tip-text"></p>
+                </div>
+                <button id="btn-start-phase" class="btn-primary">Iniciar Fase</button>
+            </div>
+        </div>
+
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div class="hud-row">
+                <div class="hud-item">
+                    <span class="hud-label">Fase</span>
+                    <span class="hud-val" id="hud-phase">1/5</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Tempo</span>
+                    <span class="hud-val" id="hud-timer">30s</span>
+                </div>
+                <div class="hud-item uv-hud">
+                    <span class="hud-label">UV</span>
+                    <span class="hud-val" id="hud-uv">6</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Pontos</span>
+                    <span class="hud-val" id="hud-score">0</span>
+                </div>
+            </div>
+            <div class="protection-bar-wrap">
+                <span>Proteção Geral:</span>
+                <div class="protection-bar"><div class="protection-fill" id="protection-fill"></div></div>
+                <span id="protection-pct">0%</span>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div id="toolbar" class="hidden">
+            <div class="toolbar-inner" id="toolbar-items"></div>
+            <div class="toolbar-hint" id="toolbar-hint">Selecione um item e clique no personagem</div>
+        </div>
+
+        <!-- Phase Complete -->
+        <div id="phase-complete" class="overlay hidden">
+            <div class="overlay-box result-box">
+                <h2>Fase Completa!</h2>
+                <div class="stars" id="stars">⭐⭐⭐</div>
+                <div class="result-stats">
+                    <div class="stat"><span>Protegidos</span><span id="stat-protected">0/0</span></div>
+                    <div class="stat"><span>Pontuação</span><span id="stat-score">0</span></div>
+                    <div class="stat"><span>Tempo</span><span id="stat-time">0s</span></div>
+                </div>
+                <div class="edu-tip" id="result-tip">
+                    <span class="tip-icon">📚</span>
+                    <p id="result-tip-text"></p>
+                </div>
+                <button id="btn-next" class="btn-primary">Próxima Fase →</button>
+            </div>
+        </div>
+
+        <!-- Game Complete -->
+        <div id="game-complete" class="overlay hidden">
+            <div class="overlay-box final-box">
+                <div class="trophy">🏆</div>
+                <h2>Parabéns!</h2>
+                <p class="final-subtitle">Você é um especialista em fotoproteção!</p>
+                <div class="final-score">
+                    <span>Pontuação Final</span>
+                    <span id="final-score-val" class="big-score">0</span>
+                </div>
+                <div class="final-stars" id="final-stars">⭐⭐⭐</div>
+                <div class="edu-tip">
+                    <span class="tip-icon">🌟</span>
+                    <p>Lembre-se: use protetor solar FPS 30+, chapéu, óculos com proteção UV e busque sombra entre 10h e 16h!</p>
+                </div>
+                <button id="btn-restart" class="btn-primary">Jogar Novamente</button>
+            </div>
+        </div>
+
+        <!-- Feedback Toast -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="engine.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
